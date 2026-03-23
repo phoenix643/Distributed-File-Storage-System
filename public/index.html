@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DFSS — Distributed File Storage System</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Sora:wght@300;400;600;700&display=swap" rel="stylesheet" />
+  <link href="main.css"/>
+</head>
+<body>
+
+<header>
+  <!-- <div class="eyebrow">DFSS v1.0 — Fresher Project</div> -->
+  <h1>Distributed File Storage System</h1>
+  <div class="api-status">
+    <span class="dot" id="api-dot"></span>
+    <span id="api-label">Connecting to backend...</span>
+  </div>
+</header>
+
+<!-- Stats -->
+<div class="stats">
+  <div class="stat"><div class="stat-val" id="s-files">0</div><div class="stat-lbl">Files stored</div></div>
+  <div class="stat"><div class="stat-val" id="s-chunks">0</div><div class="stat-lbl">Total chunks</div></div>
+  <div class="stat"><div class="stat-val" id="s-nodes">—</div><div class="stat-lbl">Online nodes</div></div>
+  <div class="stat"><div class="stat-val" id="s-rep">3×</div><div class="stat-lbl">Replication factor</div></div>
+</div>
+
+<div class="grid2">
+  <!-- Upload -->
+  <div class="card">
+    <div class="card-label">Upload file</div>
+    <div class="drop-zone" id="drop-zone" onclick="document.getElementById('file-input').click()">
+      <div class="dz-icon">📂</div>
+      <p>Click to select or drag & drop a file</p>
+      <span>Chunked → replicated across nodes automatically</span>
+    </div>
+    <input type="file" id="file-input" />
+    <div id="upload-progress"><div id="upload-bar"></div></div>
+    <button class="btn" id="upload-btn" disabled>Select a file first</button>
+
+    <div style="margin-top:14px">
+      <div class="card-label">Replication factor</div>
+      <div class="config-row">
+        <span class="config-key">Copies per chunk</span>
+        <select class="rep-select" id="rep-factor" onchange="updateRepFactor()">
+          <option value="1">1× — no redundancy</option>
+          <option value="2">2× — basic</option>
+          <option value="3" selected>3× — standard</option>
+          <option value="4">4× — high availability</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- Nodes -->
+  <div class="card">
+    <div class="card-label">Storage nodes — click to toggle online/offline</div>
+    <div class="nodes-grid" id="nodes-grid"><div class="empty">Loading nodes...</div></div>
+  </div>
+</div>
+
+<div class="grid3">
+  <!-- File Registry -->
+  <div class="card" style="grid-column: span 2">
+    <div class="card-label">File registry</div>
+    <div id="file-list"><div class="empty">No files yet — upload one above</div></div>
+  </div>
+
+  <!-- Right Column -->
+  <div style="display:flex;flex-direction:column;gap:16px">
+    <!-- Retrieve -->
+    <div class="card">
+      <div class="card-label">Retrieve & download</div>
+      <div class="input-row">
+        <select id="retrieve-select"><option value="">— select file —</option></select>
+        <button class="btn btn-sm btn-ghost" onclick="retrieveFile()">Fetch ↓</button>
+      </div>
+      <div class="retrieve-result" id="retrieve-result"></div>
+    </div>
+
+    <!-- Config -->
+    <div class="card">
+      <div class="card-label">System config</div>
+      <div id="config-display"><div class="empty">Loading...</div></div>
+    </div>
+
+    <!-- Log -->
+    <div class="card" style="flex:1">
+      <div class="card-label">Activity log</div>
+      <div class="log-box" id="log-box"></div>
+    </div>
+  </div>
+</div>
+
+<script src="main.js"></script>
+</body>
+</html>
